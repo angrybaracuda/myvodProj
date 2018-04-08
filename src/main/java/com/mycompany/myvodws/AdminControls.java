@@ -5,10 +5,36 @@
  */
 package com.mycompany.myvodws;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.omertron.omdbapi.OmdbApi;
+import com.omertron.omdbapi.emumerations.PlotType;
+import com.omertron.omdbapi.model.OmdbVideoFull;
+import com.omertron.omdbapi.tools.OmdbBuilder;
+import com.serviceimpl.myvodws.AdminVideoServiceImpl;
+import java.io.File;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
 /**
  *
  * @author kunsi
  */
+@Path("admin/")
 public class AdminControls {
-    
+
+    private OmdbVideoFull result;
+
+    @POST
+    @Path("addvideo/getvideodata")
+    @Produces(MediaType.APPLICATION_JSON)
+    public OmdbVideoFull getvideodata(
+            @FormParam("title") String title,
+            @FormParam("category") String category) {
+        this.result = new OmdbVideoFull();
+
+        return new AdminVideoServiceImpl().getVideoData(result, title);
+    }
 }

@@ -1,15 +1,52 @@
 <html dir="ltr"><head>
         <title>TODO supply a title</title>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script> 
+        <script src="http://malsup.github.com/jquery.form.js"></script> 
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script>
+            $(function () {
+                $('#upload-form').ajaxForm({
+                    success: function (msg) {
+                        alert("File has been uploaded successfully");
+                    },
+                    error: function (msg) {
+                        $("#upload-error").text("Couldn't upload file");
+                    }
+                });
+            });
+        </script>
+
+
+        <script>
+//            function getVideoData()
+//            {
+//                var options = {
+//                    target: '#fetchedata',
+//                    url: 'webapi/admin/addvideo/getvideodata',
+//                    method: 'POST',
+//                    success: function (x) {
+//                        alert('Thanks for your comment!' + x.toString()+'OP');
+//                    },
+//                    error: function () {
+//                        alert('Failed!');
+//                    }
+//                };
+//                $('#video_data').ajaxForm(options);
+//            }
+        </script>
     </head>
     <body contenteditable="true">
-
-        <form method="POST">
-            <input type="file" name="fileUpload"  />
+        <form id="upload-form" class="upload-box" action="upload" method="post" enctype="multipart/form-data">
+            <input type="file" id="file" name="file1">
+            <span id="upload-error" class="error">${uploadError}</span>
+            <input type="submit" id="upload-button" value="upload">
         </form>
-
-</body>
-
-
+        <form id="video_data" action="webapi/admin/addvideo/getvideodata" method="POST" >
+            Video Title: <input type="text" name="title" /><br>
+            Video Category: <input type="text" name="category" /><br>
+            <input type="submit" name="fetchData" value="FetchData" /><br>
+            <p id="fetchedata"></p>
+        </form>
+    </body>
 </html>
