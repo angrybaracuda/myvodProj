@@ -12,6 +12,7 @@ import com.omertron.omdbapi.model.OmdbVideoFull;
 import com.omertron.omdbapi.tools.OmdbBuilder;
 import com.serviceimpl.myvodws.AdminVideoServiceImpl;
 import java.io.File;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -29,12 +30,13 @@ public class AdminControls {
 
     @POST
     @Path("addvideo/getvideodata")
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public OmdbVideoFull getvideodata(
-            @FormParam("title") String title,
-            @FormParam("category") String category) {
-        this.result = new OmdbVideoFull();
-
-        return new AdminVideoServiceImpl().getVideoData(result, title);
+    public OmdbVideoFull getvideodata(OmdbVideoFull result2) {
+        if(result2.isResponse())
+        {
+            return null;
+        }
+        return new AdminVideoServiceImpl().getVideoData(result2);
     }
 }

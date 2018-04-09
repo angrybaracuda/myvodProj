@@ -21,28 +21,28 @@ import java.io.File;
 
 public class AdminVideoServiceImpl {
 
-  //  OmdbVideoFull result;
 
-    public OmdbVideoFull getVideoData(OmdbVideoFull result , String title) {
-        
-      //  System.out.println("###########################################################################################################################"+title);
+    public OmdbVideoFull getVideoData(OmdbVideoFull result2) {
+
+        //  System.out.println("###########################################################################################################################"+title);
         OmdbApi omdb = new OmdbApi("1a9e906b");
         try {
-            result = omdb.getInfo(new OmdbBuilder()
-                    .setTitle(title)
+            result2 = omdb.getInfo(new OmdbBuilder()
+                    .setTitle(result2.getTitle())
                     .setPlot(PlotType.FULL)
                     .setTomatoes(true)
                     .build());
 
             ObjectMapper mapper = new ObjectMapper();
 
-            mapper.writeValue(new File("E:\\file.json"), result);
-            String jsonInString = mapper.writeValueAsString(result);
-            System.out.println(result.toString());
+            mapper.writeValue(new File("E:\\file.json"), result2);
+            String jsonInString = mapper.writeValueAsString(result2);
+            System.out.println(result2.toString());
 
         } catch (Exception e) {
         }
-        return result;
+
+        return result2;
     }
 
 //    public static void main(String[] arhgs) {

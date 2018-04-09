@@ -2,6 +2,8 @@
         <title>TODO supply a title</title>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script> 
         <script src="http://malsup.github.com/jquery.form.js"></script> 
+
+        <script src="Script/JQueryFormSerialize.js" type="text/javascript"></script>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script>
@@ -34,6 +36,27 @@
 //                };
 //                $('#video_data').ajaxForm(options);
 //            }
+
+            function submitFormVideodata() {
+                var formData = jQuery('#video_data').serializeJSON();
+                var jsonString = JSON.stringify(formData);
+                console.log(jsonString);
+                $.ajax({
+                    type: "POST",
+                    url: "webapi/admin/addvideo/getvideodataJ",
+                    data: jsonString,
+                    success: function (x) {
+                        alert(x.toString());
+                        console.log(x);
+                    },
+                    error: function (x) {
+                        alert(x.toString());
+                        console.log(x);
+                    },
+                    dataType: "json",
+                    contentType: "application/json"
+                });
+            }
         </script>
     </head>
     <body contenteditable="true">
@@ -42,10 +65,10 @@
             <span id="upload-error" class="error">${uploadError}</span>
             <input type="submit" id="upload-button" value="upload">
         </form>
-        <form id="video_data" action="webapi/admin/addvideo/getvideodata" method="POST" >
+        <form id="video_data" >
             Video Title: <input type="text" name="title" /><br>
-            Video Category: <input type="text" name="category" /><br>
-            <input type="submit" name="fetchData" value="FetchData" /><br>
+            Video Category: <input type="text" name="type" /><br>
+            <input type="button" onclick="submitFormVideodata()" value="FetchData" /><br>
             <p id="fetchedata"></p>
         </form>
     </body>
