@@ -30,7 +30,7 @@ public class AdminVideoServiceImpl {
             result2 = omdb.getInfo(new OmdbBuilder()
                     .setTitle(result2.getTitle())
                     .setPlot(PlotType.FULL)
-                    .setTomatoes(true)
+                    .setTomatoesOff()
                     .build());
 
             ObjectMapper mapper = new ObjectMapper();

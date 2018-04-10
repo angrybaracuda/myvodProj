@@ -5,6 +5,7 @@
  */
 package com.mycompany.myvodws;
 
+import com.beans.myvodws.VideoData;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.omertron.omdbapi.OmdbApi;
 import com.omertron.omdbapi.emumerations.PlotType;
@@ -29,12 +30,19 @@ public class AdminControls {
     private OmdbVideoFull result;
 
     @POST
+    @Path("addvideo")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public VideoData addNewVideo() {
+        return null;
+    }
+
+    @POST
     @Path("addvideo/getvideodata")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public OmdbVideoFull getvideodata(OmdbVideoFull result2) {
-        if(result2.isResponse())
-        {
+        if (result2.isResponse()) {
             return null;
         }
         return new AdminVideoServiceImpl().getVideoData(result2);

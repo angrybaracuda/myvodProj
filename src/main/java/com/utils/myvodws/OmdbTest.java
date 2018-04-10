@@ -29,11 +29,11 @@ public class OmdbTest {
         
         try {
             OmdbVideoFull result = omdb.getInfo(new OmdbBuilder()
-                    .setTitle("Blade Runner")
+                    .setTitle("Game of thrones")
                     //.setYear(1982)
                     
                     .setPlot(PlotType.FULL)
-                    .setTomatoes(true)
+                    .setTomatoes(false)
                     .build());
 
             ObjectMapper mapper = new ObjectMapper();

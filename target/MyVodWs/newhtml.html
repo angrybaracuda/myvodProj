@@ -1,10 +1,12 @@
-<html dir="ltr"><head>
-        <title>TODO supply a title</title>
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script> 
-        <script src="http://malsup.github.com/jquery.form.js"></script> 
+<html dir="ltr">
+    <head>
 
+        <script src="Script/jquery.min.js" type="text/javascript"></script>
+        <script src="http://malsup.github.com/jquery.form.js"></script> 
+        <script src="Script/underscore.js" type="text/javascript"></script>
         <script src="Script/JQueryFormSerialize.js" type="text/javascript"></script>
         <meta charset="UTF-8">
+        <script src="Script/jsonform.js" type="text/javascript"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script>
             $(function () {
@@ -36,18 +38,158 @@
 //                };
 //                $('#video_data').ajaxForm(options);
 //            }
+            function manuallyEnterVideodata() {
+                $('#video_data_get').jsonForm({
+                    schema: {
+
+                        "Title": {
+
+                            "type": "string",
+                            "title": "Title"
+                        },
+                        "Year": {
+
+                            "type": "string",
+                            "title": "Year"
+                        },
+                        "languages": {
+                            "type": "string",
+                            "title": "Languages"
+
+                        },
+                        "countries": {
+                            "type": "string",
+                            "title": "Countries"
+
+
+                        },
+                        "imdbID": {
+                            "type": "string",
+                            "title": "Imdbid"
+                        },
+                        "Type": {
+
+                            "type": "string",
+                            "title": "Type",
+                            "enum": ["Movie", "Series", "Episode"]
+                        },
+                        "Poster": {
+
+                            "type": "string",
+                            "title": "Poster  "
+                        },
+                        "Plot": {
+                            "type": "string",
+                            "title": "Plot  "
+                        },
+                        "Rated": {
+
+                            "type": "string",
+                            "title": "Rated"
+
+                        },
+                        "Released": {
+
+                            "type": "string",
+                            "title": "Released  "
+                        },
+                        "Runtime": {
+
+                            "type": "string",
+                            "title": "Runtime  "
+                        },
+                        "Genre": {
+
+                            "type": "string",
+                            "title": "Genre  "
+                        },
+                        "Director": {
+                            "type": "string",
+                            "title": "Director  "
+                        },
+                        "Writer": {
+
+                            "type": "string",
+                            "title": "Writer  "
+                        },
+                        "Actors": {
+                            "type": "string",
+                            "title": "Actors  "
+                        },
+                        "imdbRating": {
+                            "type": "string",
+                            "title": "Imdbrating  "
+                        },
+                        "imdbVotes": {
+                            "type": "string",
+                            "title": "Imdbvotes  "
+                        },
+                        "DVD": {
+
+                            "type": "string",
+                            "title": "Dvd  "
+
+
+                        },
+                        "BoxOffice": {
+
+                            "type": "string",
+                            "title": "Boxoffice  "
+
+
+                        },
+                        "Production": {
+
+                            "type": "string",
+                            "title": "Production  "
+
+
+                        },
+                        "Website": {
+
+                            "type": "string",
+                            "title": "Website"
+                        },
+                        "Awards": {
+                            "type": "string",
+                            "title": "Awards  "
+                        },
+                        "Season": {
+                            "type": "number",
+                            "title": "Season  "
+                        },
+                        "Episode": {
+
+                            "type": "number",
+                            "title": "Episode  "
+                        }
+                    }
+                    , onSubmit: function (error,values) {
+                        console.log(error);
+                    }
+                });
+            }
 
             function submitFormVideodata() {
+
                 var formData = jQuery('#video_data').serializeJSON();
                 var jsonString = JSON.stringify(formData);
                 console.log(jsonString);
                 $.ajax({
                     type: "POST",
-                    url: "webapi/admin/addvideo/getvideodataJ",
+                    url: "webapi/admin/addvideo/getvideodata",
                     data: jsonString,
                     success: function (x) {
-                        alert(x.toString());
+
                         console.log(x);
+                        if (x.response == true)
+                        {
+                            alert('Found the data');
+
+                        } else
+                        {
+                            alert('Could not find the data');
+                        }
                     },
                     error: function (x) {
                         alert(x.toString());
@@ -59,7 +201,7 @@
             }
         </script>
     </head>
-    <body contenteditable="true">
+    <body>
         <form id="upload-form" class="upload-box" action="upload" method="post" enctype="multipart/form-data">
             <input type="file" id="file" name="file1">
             <span id="upload-error" class="error">${uploadError}</span>
@@ -69,7 +211,9 @@
             Video Title: <input type="text" name="title" /><br>
             Video Category: <input type="text" name="type" /><br>
             <input type="button" onclick="submitFormVideodata()" value="FetchData" /><br>
+            <input type="button" onclick="manuallyEnterVideodata()" value="Input Data manually" /><br>
             <p id="fetchedata"></p>
         </form>
+        <form id="video_data_get" method="post" action="webapi/admin/addvideo/getvideodata"></form>
     </body>
 </html>
