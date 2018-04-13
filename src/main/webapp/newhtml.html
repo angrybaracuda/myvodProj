@@ -9,14 +9,27 @@
         <script src="Script/jsonform.js" type="text/javascript"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script>
-            $(function () {
-                $('#upload-form').ajaxForm({
-                    success: function (msg) {
-                        alert("File has been uploaded successfully");
-                    },
-                    error: function (msg) {
-                        $("#upload-error").text("Couldn't upload file");
-                    }
+            /*   $(function () {
+             $('#upload-form').ajaxForm({
+             success: function (msg) {
+             alert("File has been uploaded successfully");
+             },
+             error: function (msg) {
+             $("#upload-error").text("Couldn't upload file");
+             }
+             });
+             });*/
+            var form = document.getElementById("upload_form");
+
+            $(form).on("submit", function (e) {
+                e.preventDefault();
+
+                $.ajax({
+                    url: form.action,
+                    type: form.method,
+                    data: new FormData(form), // build payload from a Form element
+                    contentType: false, // tell jQuery not to adjust content-type
+                    processData: false               // tell jQuery not to convert raw data to string
                 });
             });
         </script>
@@ -164,7 +177,7 @@
                             "title": "Episode  "
                         }
                     }
-                    , onSubmit: function (error,values) {
+                    , onSubmit: function (error, values) {
                         console.log(error);
                     }
                 });
@@ -188,7 +201,9 @@
 
                         } else
                         {
-                            alert('Could not find the data');
+                            alert('Could not find the data please enter manually');
+                            manuallyEnterVideodata();
+                            $("#fetch_omdb").hide();
                         }
                     },
                     error: function (x) {
@@ -202,16 +217,16 @@
         </script>
     </head>
     <body>
-        <form id="upload-form" class="upload-box" action="upload" method="post" enctype="multipart/form-data">
+        <form id="upload_form" class="upload-box" action="upload" method="post" enctype="multipart/form-data">
             <input type="file" id="file" name="file1">
             <span id="upload-error" class="error">${uploadError}</span>
-            <input type="submit" id="upload-button" value="upload">
+            <input type="submit" id="upload-button" onclick="JavaScript:return Validator();" value="upload">
         </form>
         <form id="video_data" >
             Video Title: <input type="text" name="title" /><br>
             Video Category: <input type="text" name="type" /><br>
-            <input type="button" onclick="submitFormVideodata()" value="FetchData" /><br>
-            <input type="button" onclick="manuallyEnterVideodata()" value="Input Data manually" /><br>
+            <input id="fetch_omdb" type="button" onclick="submitFormVideodata()" value="FetchData" /><br>
+            <input id="enter_manually" type="button" onclick="manuallyEnterVideodata()" value="Input Data manually" /><br>
             <p id="fetchedata"></p>
         </form>
         <form id="video_data_get" method="post" action="webapi/admin/addvideo/getvideodata"></form>

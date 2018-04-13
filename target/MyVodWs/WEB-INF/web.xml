@@ -11,11 +11,16 @@ see implementation details http://jersey.java.net/nonav/documentation/latest/jax
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
-  
+    <servlet>
+        <servlet-name>UploadVideo</servlet-name>
+        <servlet-class>com.servelets.myvodws.UploadVideo</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Jersey Web Application</servlet-name>
         <url-pattern>/webapi/*</url-pattern>
     </servlet-mapping>
-
-
+    <servlet-mapping>
+        <servlet-name>UploadVideo</servlet-name>
+        <url-pattern>/UploadVideo</url-pattern>
+    </servlet-mapping>
 </web-app>
