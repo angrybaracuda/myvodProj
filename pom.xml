@@ -79,8 +79,16 @@
             <artifactId>API-OMDB</artifactId>
             <version>1.5</version>
         </dependency>
-
-
+        <dependency>
+            <groupId>com.abercap</groupId>
+            <artifactId>mediainfo-java-api</artifactId>
+            <version>1.0.0.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.kokorin.jaffree</groupId>
+            <artifactId>jaffree</artifactId>
+            <version>0.5</version>
+        </dependency>
         <dependency>
             <groupId>org.apache.geronimo.specs</groupId>
             <artifactId>geronimo-servlet_3.0_spec</artifactId>

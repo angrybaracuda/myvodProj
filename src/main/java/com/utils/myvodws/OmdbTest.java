@@ -40,6 +40,7 @@ public class OmdbTest {
             mapper.writeValue(new File("E:\\file.json"), result);
             String jsonInString = mapper.writeValueAsString(result);
             System.out.println(result.toString());
+            System.out.println(Integer.MAX_VALUE);
         } catch (Exception e) {
         }
         

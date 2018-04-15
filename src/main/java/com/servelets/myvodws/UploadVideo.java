@@ -21,7 +21,8 @@ import javax.servlet.http.Part;
  *
  * @author kunsi
  */
-@MultipartConfig
+@MultipartConfig(maxFileSize = Long.MAX_VALUE,// 5000MB
+        maxRequestSize = (long) 16106127360.0)   // 5000MB
 public class UploadVideo extends HttpServlet {
 
     /**
@@ -76,6 +77,7 @@ public class UploadVideo extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        System.out.println("############################ INSIDE  FILE UPLOADED ############################");
         Part file = request.getPart("file");
         String filename = getFilename(file);
         InputStream filecontent = file.getInputStream();
@@ -87,12 +89,14 @@ public class UploadVideo extends HttpServlet {
         if (!fileSaveDir.exists()) {
             fileSaveDir.mkdir();
         }
+        System.out.println("############################ Begining FILE UPLOADED ############################");
         for (Part part : request.getParts()) {
             String fileName = filename;
             // refines the fileName in case it is an absolute path
             fileName = new File(fileName).getName();
             part.write(savePath + File.separator + fileName);
         }
+        System.out.println("############################ FILE UPLOADED ############################");
         PrintWriter out = response.getWriter();
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
