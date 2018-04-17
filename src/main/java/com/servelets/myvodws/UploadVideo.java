@@ -5,10 +5,14 @@
  */
 package com.servelets.myvodws;
 
+import com.beans.myvodws.VideoMetadata;
+import com.utils.myvodws.MetadataWrapper;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -89,18 +93,25 @@ public class UploadVideo extends HttpServlet {
         if (!fileSaveDir.exists()) {
             fileSaveDir.mkdir();
         }
-        System.out.println("############################ Begining FILE UPLOADED ############################");
+        //     Logger.getLogger(MetadataWrapper.class.getName()).log(Level.INFO, null, );
+        Logger.getLogger(MetadataWrapper.class.getName()).log(Level.INFO, "############################ Begining FILE UPLOADED ############################");
+        //System.out.println("############################ Begining FILE UPLOADED ############################");
         for (Part part : request.getParts()) {
             String fileName = filename;
             // refines the fileName in case it is an absolute path
             fileName = new File(fileName).getName();
             part.write(savePath + File.separator + fileName);
         }
+         Logger.getLogger(MetadataWrapper.class.getName()).log(Level.INFO, "############################ Getting Metadata ############################");
+        MetadataWrapper wr = new MetadataWrapper();
+        Logger.getLogger(MetadataWrapper.class.getName()).log(Level.INFO, "############################ "+savePath + File.separator + filename+" ############################");
+        VideoMetadata vm = wr.generateVideoMetadada("\""+savePath + File.separator + filename+"\"");
+
         System.out.println("############################ FILE UPLOADED ############################");
         PrintWriter out = response.getWriter();
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write("File " + filename + " successfully uploaded");
+        response.getWriter().write("File " + filename + " successfully uploaded \n" + vm.toString());
     }
 
     private static String getFilename(Part part) {
