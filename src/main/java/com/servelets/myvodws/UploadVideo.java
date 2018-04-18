@@ -6,6 +6,7 @@
 package com.servelets.myvodws;
 
 import com.beans.myvodws.VideoMetadata;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.utils.myvodws.MetadataWrapper;
 import java.io.File;
 import java.io.IOException;
@@ -102,16 +103,20 @@ public class UploadVideo extends HttpServlet {
             fileName = new File(fileName).getName();
             part.write(savePath + File.separator + fileName);
         }
-         Logger.getLogger(MetadataWrapper.class.getName()).log(Level.INFO, "############################ Getting Metadata ############################");
+        Logger.getLogger(MetadataWrapper.class.getName()).log(Level.INFO, "############################ Getting Metadata ############################");
         MetadataWrapper wr = new MetadataWrapper();
-        Logger.getLogger(MetadataWrapper.class.getName()).log(Level.INFO, "############################ "+savePath + File.separator + filename+" ############################");
-        VideoMetadata vm = wr.generateVideoMetadada("\""+savePath + File.separator + filename+"\"");
+        Logger.getLogger(MetadataWrapper.class.getName()).log(Level.INFO, "############################ " + savePath + File.separator + filename + " ############################");
+        VideoMetadata vm = wr.generateVideoMetadada("\"" + savePath + File.separator + filename + "\"");
 
         System.out.println("############################ FILE UPLOADED ############################");
         PrintWriter out = response.getWriter();
-        response.setContentType("text/plain");
+        response.setContentType("apllication/json");
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write("File " + filename + " successfully uploaded \n" + vm.toString());
+        String jsonResp;
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.writeValue(new File(vm.getSourceFile() + ".json"), vm);
+        jsonResp = mapper.writeValueAsString(vm);
+        response.getWriter().write(jsonResp);
     }
 
     private static String getFilename(Part part) {

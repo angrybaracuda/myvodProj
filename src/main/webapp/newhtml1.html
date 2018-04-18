@@ -6,8 +6,11 @@ and open the template in the editor.
 -->
 <html>
     <head>
+        <script src="Script/jquery.min.js" type="text/javascript"></script>
+        <script src="Script/json2table.js" type="text/javascript"></script>
         <title>TODO supply a title</title>
         <meta charset="UTF-8">
+
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script>
             window.onload = function () {
@@ -52,6 +55,7 @@ and open the template in the editor.
 
             function uploadComplete(event) {
                 document.getElementById("status").innerHTML = event.target.responseText;
+                $.jsontotable( JSON.parse(event.target.responseText), {id: '#jsontotable', header: false});
             }
         </script>
         <style>
@@ -70,7 +74,7 @@ and open the template in the editor.
 
             <div id="dropbox">Drag and drop a file here...</div>
             <div id="status"></div>
-
+            <div id="jsontotable" class="jsontotable"></div>
         </form>
 
 
