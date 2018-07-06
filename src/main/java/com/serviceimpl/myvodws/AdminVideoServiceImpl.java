@@ -21,7 +21,6 @@ import java.io.File;
 
 public class AdminVideoServiceImpl {
 
-
     public OmdbVideoFull getVideoData(OmdbVideoFull result2) {
 
         //  System.out.println("###########################################################################################################################"+title);
@@ -43,6 +42,11 @@ public class AdminVideoServiceImpl {
         }
 
         return result2;
+    }
+    
+    public String saveVideoData ()
+    {
+        return null;
     }
 
 //    public static void main(String[] arhgs) {

@@ -14,7 +14,10 @@ see implementation details http://jersey.java.net/nonav/documentation/latest/jax
     <servlet>
         <servlet-name>UploadVideo</servlet-name>
         <servlet-class>com.servelets.myvodws.UploadVideo</servlet-class>
-        
+    </servlet>
+    <servlet>
+        <servlet-name>VerifySessionPlayBack</servlet-name>
+        <servlet-class>com.servelets.myvodws.VerifySessionPlayBack</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Jersey Web Application</servlet-name>
@@ -23,5 +26,9 @@ see implementation details http://jersey.java.net/nonav/documentation/latest/jax
     <servlet-mapping>
         <servlet-name>UploadVideo</servlet-name>
         <url-pattern>/UploadVideo</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>VerifySessionPlayBack</servlet-name>
+        <url-pattern>/VerifySessionPlayBack</url-pattern>
     </servlet-mapping>
 </web-app>

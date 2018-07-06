@@ -57,4 +57,8 @@ public class UserServiceImpl {
         }
         return user;
     }
+
+    public String verifyUser() {
+        return null;
+    }
 }

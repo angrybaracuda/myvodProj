@@ -230,6 +230,9 @@ public class VideoMetadata {
     private Double megapixels;
     @JsonProperty("Rotation")
     private Integer rotation;
+
+    public VideoMetadata() {
+    }
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
