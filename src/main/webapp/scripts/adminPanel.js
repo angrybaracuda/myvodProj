@@ -22,13 +22,14 @@ function finalizeUpload()
 
     var final_data = "{\"OmdbVideoFull\":" + JSON.stringify(videoData) + ",\"VideoMetadata\":" + JSON.stringify(videoMetadata[0]) + "}";
     //  console.log(final_data);
-    console.log(final_data);
+    console.log( JSON.stringify(final_data));
     $.ajax({
         type: "POST",
         url: "webapi/admin/addvideo/complete",
         data: final_data,
+        contentType : "text/plain",
         success: function (x) {
-            console.log(JSON.stringify(x));
+            console.log(x);
         },
         error: function (x) {
            // alert(x.toString());

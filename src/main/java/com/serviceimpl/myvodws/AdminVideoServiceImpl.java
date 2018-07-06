@@ -9,7 +9,15 @@ package com.serviceimpl.myvodws;
  *
  * @author kunsi
  */
+import com.beans.myvodws.VideoData;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
 import com.omertron.omdbapi.OMDBException;
 import com.omertron.omdbapi.OmdbApi;
 import com.omertron.omdbapi.emumerations.PlotType;
@@ -18,6 +26,10 @@ import com.omertron.omdbapi.model.OmdbVideoFull;
 import com.omertron.omdbapi.model.SearchResults;
 import com.omertron.omdbapi.tools.OmdbBuilder;
 import java.io.File;
+import java.net.UnknownHostException;
+import java.util.HashMap;
+import java.util.Map;
+import org.bson.types.ObjectId;
 
 public class AdminVideoServiceImpl {
 
@@ -43,10 +55,18 @@ public class AdminVideoServiceImpl {
 
         return result2;
     }
-    
-    public String saveVideoData ()
-    {
-        return null;
+
+    public String saveVideoData(VideoData vd) throws UnknownHostException, JsonProcessingException {
+        MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
+
+        DB database = mongoClient.getDB("myvod");
+        DBCollection collection = database.getCollection("videos");
+        ObjectMapper mapperObj = new ObjectMapper();
+        DBObject document = new BasicDBObject("OmdbFull",  mapperObj.writeValueAsString(vd.getOmdbVideoFull()))
+                .append("VideoMetadata",  mapperObj.writeValueAsString(vd.getVideoMetadata()));
+        collection.insert(document);
+        ObjectId id = (ObjectId) document.get("_id");
+        return id.toString();
     }
 
 //    public static void main(String[] arhgs) {

@@ -24,9 +24,9 @@ public class VideoData {
      
      
 
-    @JsonProperty("OmdbVideoFull")
+  @JsonProperty("OmdbVideoFull")
     private OmdbVideoFull omdbVideoFull;
-    @JsonProperty("VideoMetadata")
+  @JsonProperty("VideoMetadata")
     private VideoMetadata videoMetadata;
 
     public VideoData() {
@@ -37,12 +37,12 @@ public class VideoData {
         this.videoMetadata = videoMetadata;
     }
    
-   @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-
-    
+//   @JsonIgnore
+//    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+//
+//    
    
-    @JsonProperty("OmdbVideoFull")
+   @JsonProperty("OmdbVideoFull")
     public OmdbVideoFull getOmdbVideoFull() {
         return omdbVideoFull;
     }
@@ -57,19 +57,19 @@ public class VideoData {
         return videoMetadata;
     }
 
-    @JsonProperty("VideoMetadata")
+   @JsonProperty("VideoMetadata")
     public void setVideoMetadata(VideoMetadata videoMetadata) {
         this.videoMetadata = videoMetadata;
     }
 
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
+// //   @JsonAnyGetter
+//    public Map<String, Object> getAdditionalProperties() {
+//        return this.additionalProperties;
+//    }
+//
+//  /  @JsonAnySetter
+//    public void setAdditionalProperty(String name, Object value) {
+//        this.additionalProperties.put(name, value);
+ //   }
 
 }

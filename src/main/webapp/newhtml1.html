@@ -212,7 +212,7 @@ and open the template in the editor.
                 $("#enter_manually").hide();
                 var formData = jQuery('#video_data').serializeJSON();
                 var jsonString = JSON.stringify(formData);
-                console.log(jsonString);
+               // console.log(jsonString);
                 $.ajax({
                     type: "POST",
                     url: "webapi/admin/addvideo/getvideodata",
@@ -223,7 +223,7 @@ and open the template in the editor.
                         if (x.response == true)
                         {
                             videoData = x;
-                            console.log(JSON.stringify(x));
+                           // console.log(JSON.stringify(x));
                             $("#video_data_get").hide();
                         } else
                         {
@@ -287,11 +287,11 @@ and open the template in the editor.
 
             function uploadComplete(event) {
                 document.getElementById("status").innerHTML = event.target.responseText;
-                videoMetadata = JSON.parse("["+event.target.responseText+"]");
+                videoMetadata = JSON.parse("[" + event.target.responseText + "]");
                 //console.log(event.target.responseText);
                 //$.jsontotable(videoMetadata, {id: '#jsontotable', header: false });
                 $('#jsontotable').createTable(videoMetadata);
-                
+
             }
         </script>
         <style>
@@ -305,7 +305,7 @@ and open the template in the editor.
             }
             #jsontotable table
             {
-                
+
             }
         </style>
     </head>

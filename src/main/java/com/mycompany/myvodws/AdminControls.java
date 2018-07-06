@@ -22,6 +22,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import com.beans.myvodws.VideoMetadata;
+import java.io.IOException;
+import java.net.UnknownHostException;
 
 /**
  *
@@ -29,9 +31,10 @@ import com.beans.myvodws.VideoMetadata;
  */
 @Path("admin/")
 public class AdminControls {
-    
+
+    private OmdbVideoFull pv;
+
     //private static VideoData result = new VideoData();
-    
     @POST
     @Path("addvideo")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -39,7 +42,7 @@ public class AdminControls {
     public VideoData addNewVideo() {
         return null;
     }
-    
+
     @POST
     @Path("addvideo/getvideodata")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -52,7 +55,7 @@ public class AdminControls {
 
         return new AdminVideoServiceImpl().getVideoData(result2);
     }
-    
+
     @POST
     @Path("addvideo/manuallyEnterVideoData")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -60,13 +63,40 @@ public class AdminControls {
     public OmdbVideoFull manuallyEnterVideoData() {
         return null;
     }
-    
+
     @POST
     @Path("addvideo/complete")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    public String addNewVideoComplete(String videoData) throws UnknownHostException {
+        System.out.println(videoData);
+        VideoData vd = new VideoData();
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            vd = objectMapper.readValue(videoData, VideoData.class);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("#####################################################\n"+vd.getOmdbVideoFull().toString()+"#########################################################################\n"+vd.getVideoMetadata().toString());
+        return  new AdminVideoServiceImpl().saveVideoData(vd);
+    }
+
+    @POST
+    @Path("addvideo/omdb")
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public VideoData addNewVideoComplete(VideoData videoData) {
-        System.out.println(videoData.toString());
+    public OmdbVideoFull omdb(OmdbVideoFull videoData) {
+        pv = videoData;
+        return pv;
+    }
+
+    @POST
+    @Path("addvideo/metadata")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public VideoMetadata metadata(VideoMetadata videoData) {
+        //  pv= videoData;
         return videoData;
     }
 }
