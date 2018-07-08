@@ -22,6 +22,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import com.beans.myvodws.VideoMetadata;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationConfig;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
@@ -58,9 +61,21 @@ public class AdminControls {
 
     @POST
     @Path("addvideo/manuallyEnterVideoData")
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public OmdbVideoFull manuallyEnterVideoData() {
+    public OmdbVideoFull manuallyEnterVideoData(String req) {
+        OmdbVideoFull vd = new OmdbVideoFull();
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+       //  objectMapper.configure(DeserializationConfigFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+        try {
+            vd = objectMapper.readValue(req, OmdbVideoFull.class);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("#####################################################\n" + vd.toString());
+        // return new AdminVideoServiceImpl().saveVideoData(vd);
         return null;
     }
 
@@ -68,18 +83,19 @@ public class AdminControls {
     @Path("addvideo/complete")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-    public String addNewVideoComplete(String videoData) throws UnknownHostException {
+    public String addNewVideoComplete(String videoData) throws UnknownHostException, JsonProcessingException {
         System.out.println(videoData);
         VideoData vd = new VideoData();
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
         try {
             vd = objectMapper.readValue(videoData, VideoData.class);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("#####################################################\n"+vd.getOmdbVideoFull().toString()+"#########################################################################\n"+vd.getVideoMetadata().toString());
-        return  new AdminVideoServiceImpl().saveVideoData(vd);
+        System.out.println("#####################################################\n" + vd.getOmdbVideoFull().toString() + "#########################################################################\n" + vd.getVideoMetadata().toString());
+        return new AdminVideoServiceImpl().saveVideoData(vd);
     }
 
     @POST
@@ -96,7 +112,14 @@ public class AdminControls {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public VideoMetadata metadata(VideoMetadata videoData) {
-        //  pv= videoData;
+
         return videoData;
+    }
+
+    @GET
+    @Path("addvideo/getallvideos")
+    @Produces(MediaType.APPLICATION_JSON)
+    public VideoData getallvideosdata(int count) {
+        return null;
     }
 }

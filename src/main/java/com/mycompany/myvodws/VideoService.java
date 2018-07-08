@@ -5,10 +5,24 @@
  */
 package com.mycompany.myvodws;
 
+import com.beans.myvodws.VideoData;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+
 /**
  *
  * @author kunsi
  */
+@Path("/videos")
 public class VideoService {
-    
+
+    @GET
+    @Path("{id}")
+    public VideoData getUserById(@PathParam("id") String id) {
+
+        // return Response.status(200).entity("getUserById is called, id : " + id).build();
+        return null;
+
+    }
 }

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="  crossorigin="anonymous"></script>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="http://cdn.fluidplayer.com/v2/current/fluidplayer.min.css" type="text/css"/>
+        <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+        <!-- Or if you want a more recent canary version -->
+        <!-- <script src="https://cdn.jsdelivr.net/npm/hls.js@canary"></script> -->
+
+        <title>Fluid Player</title>
+        <link rel="stylesheet" href="http://cdn.fluidplayer.com/v2/current/fluidplayer.min.css" type="text/css"/>
+        <script src="http://cdn.fluidplayer.com/v2/current/fluidplayer.min.js"></script>
+
+
+
+
+    </head>
+    <body>
+        <video id="video"controls style="width: 640px; height: 360px;" ></video>
+        <script>
+            fluidPlayer('video', {
+                layoutControls: {
+                    primaryColor: false,
+                    playButtonShowing: true,
+                    playPauseAnimation: true,
+                    fillToContainer: false,
+                    autoPlay: false,
+                    mute: false,
+                    keyboardControl: true,
+                    layout: 'default',
+                    logo: {
+                        imageUrl: null,
+                        position: 'top left',
+                        clickUrl: null,
+                        opacity: 1
+                    },
+                    controlBar: {
+                        autoHide: true,
+                        autoHideTimeout: 3,
+                        animated: true
+                    },
+                    timelinePreview: {},
+                    htmlOnPauseBlock: {
+                        html: null,
+                        height: null,
+                        width: null
+                    },
+                    playerInitCallback: (function () {})
+                }
+            });
+            var video = document.getElementById('video');
+            if (Hls.isSupported()) {
+                console.log("HLS Supported block");
+                var hls = new Hls();
+                hls.loadSource('http://localhost:8081/MyVodWs/folder/index.m3u8');
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, function () {
+                    video.play();
+                });
+            }
+            // hls.js is not supported on platforms that do not have Media Source Extensions (MSE) enabled.
+            // When the browser has built-in HLS support (check using `canPlayType`), we can provide an HLS manifest (i.e. .m3u8 URL) directly to the video element throught the `src` property.
+            // This is using the built-in support of the plain video element, without using hls.js.
+            // Note: it would be more normal to wait on the 'canplay' event below however on Safari (where you are most likely to find built-in HLS support) the video.src URL must be on the user-driven
+            // white-list before a 'canplay' event will be emitted; the last video event that can be reliably listened-for when the URL is not on the white-list is 'loadedmetadata'.
+            // else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            // console.log("HLS not Supported block");
+            //   video.src = 'http://localhost:8081/MyVodWs/folder/index.m3u8';
+            //  video.addEventListener('loadedmetadata',function() {
+            //    video.play();
+            //  });
+            //}
+        </script>
+    </body>
+</html>

@@ -6,7 +6,8 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <script src="Script/jquery.min.js" type="text/javascript"></script>
+        <!--        <script src="Script/jquery.min.js" type="text/javascript"></script>-->
+        <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="  crossorigin="anonymous"></script>
         <script src="Script/json2table.js" type="text/javascript"></script>
         <!--        <script src="Script/jquery.min.js" type="text/javascript"></script>-->
         <script src="http://malsup.github.com/jquery.form.js"></script> 
@@ -22,16 +23,10 @@ and open the template in the editor.
 
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-        <title>TODO supply a title</title>
+        <title>Admin Panel</title>
         <script src="scripts/adminPanel.js" type="text/javascript"></script>
         <script src="scripts/JSON-to-Table-1.0.0.js" type="text/javascript"></script>
-        <style>
-            div 
-            {
-                margin:10px;
-                border:1px solid black;
-            }
-        </style>
+
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script>
             /*   $(function () {
@@ -203,7 +198,10 @@ and open the template in the editor.
                         }
                     }
                     , onSubmit: function (error, values) {
-                        console.log(error);
+                        //   var formData = JSON.stringify($("#video_data_get").serializeArray());
+                        console.log(JSON.stringify(values));
+                        videoData = values;
+                       
                     }
                 });
             }
@@ -212,7 +210,7 @@ and open the template in the editor.
                 $("#enter_manually").hide();
                 var formData = jQuery('#video_data').serializeJSON();
                 var jsonString = JSON.stringify(formData);
-               // console.log(jsonString);
+                // console.log(jsonString);
                 $.ajax({
                     type: "POST",
                     url: "webapi/admin/addvideo/getvideodata",
@@ -223,13 +221,28 @@ and open the template in the editor.
                         if (x.response == true)
                         {
                             videoData = x;
-                           // console.log(JSON.stringify(x));
+                            console.log(JSON.stringify(x));
                             $("#video_data_get").hide();
+                            jQuery.each(x, function (i, val) {
+                                console.log("Key is " + i + " value is" + val + ".");
+                                if (val != "" && i != "error" && i != "response") {
+                                    if (i != "poster")
+                                    {
+                                        $("#fetchedata").append("<tr><th>" + i + ": </th>" + "<td>" + val + "</td></tr>");
+
+                                    } else if (i == "poster")
+                                    {
+                                        $("#fetchedata").append("<tr><th>" + i + ": </th>" + "<td><img src='" + val + "' height='240' width='180' /></td></tr>");
+
+                                    }
+                                }
+                            });
                         } else
                         {
                             alert('Could not find the data please enter manually');
                             manuallyEnterVideodata();
                             $("#fetch_omdb").hide();
+                            $("#video_data").hide();
                             $("#video_data_get").show();
 
                         }
@@ -237,6 +250,7 @@ and open the template in the editor.
                     error: function (x) {
                         alert(x.toString());
                         console.log(x);
+
                     },
                     dataType: "json",
                     contentType: "application/json"
@@ -282,16 +296,25 @@ and open the template in the editor.
             function uploadProgress(event) {
                 // Note: doesn't work with async=false.
                 var progress = Math.round(event.loaded / event.total * 100);
-                document.getElementById("status").innerHTML = "Progress " + progress + "%";
+                // document.getElementById("status").innerHTML = "Progress " + progress + "%";
+                $(".progress-bar").css("width", progress + "%").text(progress + " %");
             }
 
             function uploadComplete(event) {
-                document.getElementById("status").innerHTML = event.target.responseText;
+                // document.getElementById("status").innerHTML = event.target.responseText;
                 videoMetadata = JSON.parse("[" + event.target.responseText + "]");
                 //console.log(event.target.responseText);
                 //$.jsontotable(videoMetadata, {id: '#jsontotable', header: false });
-                $('#jsontotable').createTable(videoMetadata);
 
+                //  $("#jsontotable").append("<table class='table table-striped'>");
+                jQuery.each(JSON.parse(event.target.responseText), function (i, val) {
+                    console.log("Key is " + i + " value is" + val + ".");
+                    if (val != "0" && val != "null" && val != "" && val != "0 s" && val != "0 0 0" && val != null) {
+                        $("#jsontotable").append("<tr><th>" + i + ": </th>" + "<td>" + val + "</td></tr>");
+                    }
+                });
+                $("#jsontotable").addClass("table table-bordered");
+                //  $("#jsontotable").append("</table>");
             }
         </script>
         <style>
@@ -303,7 +326,8 @@ and open the template in the editor.
                 padding: 5px;
                 color: gray;
             }
-            #jsontotable table
+
+            #header_wrapper
             {
 
             }
@@ -311,31 +335,81 @@ and open the template in the editor.
     </head>
     <body>
         <div class="full_wrapper">
-            <div class="header_wrapper"></div>
+            <div class="header_wrapper  panel-info" >
+                <div class="panel-heading"><h1>Admin Panel <small>Content management</small></h1></div>
+            </div>
             <div class="container_wrapper">
 
-                <div style="float:left; width:60%;">
-                    <form id="video_data" >
-                        Video Title: <input type="text" name="title" /><br>
-                        Video Category: <input type="text" name="type" /><br>
+                <nav class="navbar navbar-inverse">
+                    <div class="container-fluid">
+                        <!-- Brand and toggle get grouped for better mobile display -->
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a class="navbar-brand" href="#">MyVOD</a>
+                        </div>
+
+                        <!-- Collect the nav links, forms, and other content for toggling -->
+                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                            <ul class="nav navbar-nav">
+                                <li class="active"><a href="#">Add New Video <span class="sr-only">(current)</span></a></li>
+                                <li><a href="#">All Videos</a></li>
+                                <li><a href="#">Edit Video Data</a></li>
+                                <li><a href="#">User Statistics</a></li>
+
+                            </ul>
+
+                            <ul class="nav navbar-nav navbar-right">
+                                <li><a href="#">Link</a></li>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#">Action</a></li>
+                                        <li><a href="#">Another action</a></li>
+                                        <li><a href="#">Something else here</a></li>
+                                        <li role="separator" class="divider"></li>
+                                        <li><a href="#">Separated link</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div><!-- /.navbar-collapse -->
+                    </div><!-- /.container-fluid -->
+
+                </nav>
+
+                <div style="margin:0px auto;width:60%;">
+                    <form class="form-group">
+                        <label>File to Upload: </label>
+                        <div id="dropbox">Drag and drop a file here...</div>
+                        <hr id="status"/>
+                        <div id="status2" class="progress progress-striped active">
+
+                            <div class="progress-bar"></div>
+
+                        </div>
+                        <table  class="table table-bordered" id="jsontotable" >
+                        </table>
+                    </form>
+                    <hr/>
+                    <form id="video_data" class="form-group" >
+                        <div class="form-group">
+                            <label>Video Title: </label><input class="form-control" type="text" name="title" />
+                        </div>
                         <input id="fetch_omdb" type="button" onclick="searchVideoData()" value="Search For Data" /><br>
                         <!--                        <input id="enter_manually" type="button" onclick="manuallyEnterVideodata()" value="Input Data manually" /><br>-->
-                        <p id="fetchedata"></p>
+                        <table id="fetchedata" class="table table-bordered" ></table>
                     </form>
-                </div>
-                <div style="float:right;  width:35%">
-                    <form>
-                        <div id="dropbox">Drag and drop a file here...</div>
-                        <div id="status"></div>
-                        <div id="jsontotable" class="jsontotable">
-                        </div>
-                    </form>
-                </div>
-                <div style="clear:both;"></div>
-                <form id="video_data_get" method="post" action="webapi/admin/addvideo/manuallyEnterVideoData">
-                    <input id="fetch_omdb" type="button" onclick="searchVideoData()" value="Search For Data" /><br>
 
-                </form>
+                    <form id="video_data_get"  enctype='application/json' >
+
+                    </form>
+                </div>
+
+
             </div>
         </div>
         <button  id ="upload" class="btn btn-block btn-success" onclick="finalizeUpload()" style="width:60%; margin: 0px auto;" >Finish</button>

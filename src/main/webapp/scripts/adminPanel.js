@@ -21,7 +21,7 @@ function finalizeUpload()
 
 
     var final_data = "{\"OmdbVideoFull\":" + JSON.stringify(videoData) + ",\"VideoMetadata\":" + JSON.stringify(videoMetadata[0]) + "}";
-    //  console.log(final_data);
+     //console.log(final_data);
     console.log( JSON.stringify(final_data));
     $.ajax({
         type: "POST",
